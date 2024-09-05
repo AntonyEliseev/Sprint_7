@@ -39,7 +39,7 @@ public class CreateCourierParamTest {
     @Test
     @DisplayName("Создание курьера (негативные сценарии, обязательные поля)")
     public void checkNegativeCourierCreate() {
-        ValidatableResponse response = courierSteps.create(courier);
+        ValidatableResponse response = courierSteps.createCourier(courier);
         int actualStatusCode = response.extract().statusCode();
         String actualMessage = response.extract().path("message");
         assertEquals(statusCode,actualStatusCode);

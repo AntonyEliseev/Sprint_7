@@ -24,14 +24,14 @@ public class LoginCourierTest {
 
     @After
     public void cleanUp() {
-        courierSteps.delete(id);
+        courierSteps.deleteCourier(id);
     }
 
     @Test
     @DisplayName("Логин курьера в системе")
     public void checkSignInPositive() {
-        courierSteps.create(courier);
-        ValidatableResponse login = courierSteps.login(Credentials.from(courier));
+        courierSteps.createCourier(courier);
+        ValidatableResponse login = courierSteps.loginCourier(Credentials.from(courier));
         int actualStatusCode = login.extract().statusCode();
         id = login.extract().path("id");
         assertNotNull(id);
@@ -41,11 +41,11 @@ public class LoginCourierTest {
     @Test
     @DisplayName("Логин курьера в системе с неверным Login")
     public void checkSignInWithWrongLogin() {
-        courierSteps.create(courier);
-        ValidatableResponse correctLogin = courierSteps.login(Credentials.from(courier));
+        courierSteps.createCourier(courier);
+        ValidatableResponse correctLogin = courierSteps.loginCourier(Credentials.from(courier));
         id = correctLogin.extract().path("id");
         courier.setLogin("1");
-        ValidatableResponse wrongLogin = courierSteps.login(Credentials.from(courier));
+        ValidatableResponse wrongLogin = courierSteps.loginCourier(Credentials.from(courier));
         int actualStatusCode = wrongLogin.extract().statusCode();
         assertEquals(HTTP_NOT_FOUND, actualStatusCode);
         String actualMessage = wrongLogin.extract().path("message");
@@ -55,11 +55,11 @@ public class LoginCourierTest {
     @Test
     @DisplayName("Логин курьера в системе с неверным паролем")
     public void checkSignInWithWrongPassword() {
-        courierSteps.create(courier);
-        ValidatableResponse correctLogin = courierSteps.login(Credentials.from(courier));
+        courierSteps.createCourier(courier);
+        ValidatableResponse correctLogin = courierSteps.loginCourier(Credentials.from(courier));
         id = correctLogin.extract().path("id");
         courier.setPassword("1");
-        ValidatableResponse wrongLogin = courierSteps.login(Credentials.from(courier));
+        ValidatableResponse wrongLogin = courierSteps.loginCourier(Credentials.from(courier));
         int actualStatusCode = wrongLogin.extract().statusCode();
         assertEquals(HTTP_NOT_FOUND, actualStatusCode);
         String actualMessage = wrongLogin.extract().path("message");
@@ -69,11 +69,11 @@ public class LoginCourierTest {
     @Test
     @DisplayName("Логин курьера в системе без Login")
     public void checkSignInWithoutLogin() {
-        courierSteps.create(courier);
-        ValidatableResponse correctLogin = courierSteps.login(Credentials.from(courier));
+        courierSteps.createCourier(courier);
+        ValidatableResponse correctLogin = courierSteps.loginCourier(Credentials.from(courier));
         id = correctLogin.extract().path("id");
         courier.setLogin(null);
-        ValidatableResponse wrongLogin = courierSteps.login(Credentials.from(courier));
+        ValidatableResponse wrongLogin = courierSteps.loginCourier(Credentials.from(courier));
         int actualStatusCode = wrongLogin.extract().statusCode();
         assertEquals(HTTP_BAD_REQUEST, actualStatusCode);
         String actualMessage = wrongLogin.extract().path("message");

@@ -41,7 +41,7 @@ public class OrderTest {
     @Test
     @DisplayName("Создание заказа")
     public void checkCreateOrderPositive() {
-        ValidatableResponse create = orderSteps.create(order);
+        ValidatableResponse create = orderSteps.createOrder(order);
         int actualStatusCode = create.extract().statusCode();
         assertEquals(HTTP_CREATED,actualStatusCode);
         track = create.extract().path("track");
@@ -50,7 +50,7 @@ public class OrderTest {
 
     @After
     public void cleanUp() {
-        ValidatableResponse delete = orderSteps.cancel(track);
+        ValidatableResponse delete = orderSteps.cancelOrder(track);
         int actualStatusCode = delete.extract().statusCode();
         assertEquals(HTTP_OK,actualStatusCode);
     }

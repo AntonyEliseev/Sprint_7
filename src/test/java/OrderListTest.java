@@ -21,7 +21,7 @@ public class OrderListTest {
 
     @After
     public void cleanUp() {
-        ValidatableResponse responseDelete = orderSteps.cancel(track);
+        ValidatableResponse responseDelete = orderSteps.cancelOrder(track);
         int actualStatusCode = responseDelete.extract().statusCode();
         assertEquals(HTTP_OK,actualStatusCode);
     }
@@ -29,7 +29,7 @@ public class OrderListTest {
     @Test
     @DisplayName("Получение списка заказов")
     public void checkOrderListGet() {
-        ValidatableResponse create = orderSteps.create(order);
+        ValidatableResponse create = orderSteps.createOrder(order);
         track = create.extract().path("track");
         ValidatableResponse getOrders = orderSteps.orderList();
         int statusCodeGetList = getOrders.extract().statusCode();

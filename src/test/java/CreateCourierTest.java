@@ -24,14 +24,14 @@ public class CreateCourierTest {
 
     @After
     public void cleanUp() {
-        courierSteps.delete(id);
+        courierSteps.deleteCourier(id);
     }
 
     @Test
     @DisplayName("Проверка создания курьера")
     public void checkCreateCourierPositive() {
-        ValidatableResponse create = courierSteps.create(courier);
-        ValidatableResponse login = courierSteps.login(Credentials.from(courier));
+        ValidatableResponse create = courierSteps.createCourier(courier);
+        ValidatableResponse login = courierSteps.loginCourier(Credentials.from(courier));
         int actualStatusCode = create.extract().statusCode();
         id = login.extract().path("id");
         Boolean isCourierCreated = create.extract().path("ok");
@@ -42,10 +42,10 @@ public class CreateCourierTest {
     @Test
     @DisplayName("Попытка создания курьера с существующим логином")
     public void checkCreateExistingCourier() {
-        courierSteps.create(courier);
-        ValidatableResponse login = courierSteps.login(Credentials.from(courier));
+        courierSteps.createCourier(courier);
+        ValidatableResponse login = courierSteps.loginCourier(Credentials.from(courier));
         id = login.extract().path("id");
-        ValidatableResponse create = courierSteps.create(courier);
+        ValidatableResponse create = courierSteps.createCourier(courier);
         int statusCode = create.extract().statusCode();
         String message = create.extract().path("message");
         assertEquals(HTTP_CONFLICT,statusCode);
